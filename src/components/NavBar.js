@@ -1,8 +1,11 @@
-import React from 'react';
-import { Container, Navbar, Nav } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import SigninModal from './SigninModal';
-import SignupModal from './SignupModal';
+import React from "react";
+import { Container, Navbar, Nav } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import SigninModal from "./SigninModal";
+import SignupModal from "./SignupModal";
+import authStore from "../stores/authStore";
+import { observer } from "mobx-react";
+import SignoutButton from "./SignoutButton";
 
 function NavBar() {
   return (
@@ -12,12 +15,23 @@ function NavBar() {
           <Navbar.Brand>Chicken Shop</Navbar.Brand>
         </Link>
         <Nav>
-          <SignupModal />
-          <SigninModal />
+          {authStore.user ? (
+            <>
+              <h2 style={{ color: "white" }}>
+                Hello {authStore.user.username}
+              </h2>
+              <SignoutButton />
+            </>
+          ) : (
+            <>
+              <SignupModal />
+              <SigninModal />
+            </>
+          )}
         </Nav>
       </Container>
     </Navbar>
   );
 }
 
-export default NavBar;
+export default observer(NavBar);
